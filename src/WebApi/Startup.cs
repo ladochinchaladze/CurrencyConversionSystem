@@ -54,7 +54,10 @@ namespace WebApi
             else
             {
                 app.UseExceptionHandler("/errors");
+                app.UseHsts();
             }
+
+
 
             app.UseHttpsRedirection();
 

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -63,13 +64,26 @@ namespace Application.Calculators.Commands
                 })
                 .WithMessage("Personal info is not filled");
 
+            Regex regex = new Regex(@"^[0-9]*$");
+
             When(x => !string.IsNullOrEmpty(x.FirstName), () =>
              {
-                 RuleFor(x => x.IdentityNumber.Length).Equal(11).WithMessage("Please select correct identity number");
-                 RuleFor(x => x.RecommendatorIdentityNumber.Length).Equal(11).WithMessage("Please select correct recomendator identity number");
+                 RuleFor(x => x.IdentityNumber)
+                 .Length(11)
+                 .Matches(regex)
+                 .WithMessage("Please select only digits in identity number");
+
+                 RuleFor(x => x.RecommendatorIdentityNumber)
+                 .Length(11)
+                 .Matches(regex)
+                 .WithMessage("Please select only digits in identity number");
+
+                 RuleFor(x => x.IdentityNumber)
+                 .NotEqual(x => x.RecommendatorIdentityNumber)
+                 .WithMessage("You cant't be recomendator");
 
              });
-            
+
 
             RuleFor(x => x)
                 .MustAsync((o, CancellationToken) => { return RecomendatorExists(o, CancellationToken); })

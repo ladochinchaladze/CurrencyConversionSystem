@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult> ExchangeCurrency(ExchangeCurrencyCommand command)
         {
             await Mediator.Send(command);
-            return NoContent();
+            return Ok();
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace WebApi.Controllers
@@ -14,7 +16,17 @@ namespace WebApi.Controllers
         [Route("/errors")]
         public IActionResult HandleErrors()
         {
-            return Problem("Something went wrong");
+            var contextException = HttpContext.Features.Get<IExceptionHandlerFeature>();
+
+            var responceCode = contextException.Error.GetType().Name switch
+            {
+                "ValidationException" => HttpStatusCode.BadRequest,
+                _ => HttpStatusCode.ServiceUnavailable
+            };
+
+            return Ok();
+
+            //+return Problem(detail: contextException.Error.Message, statusCode: (int)responceCode);
         }
     }
 }

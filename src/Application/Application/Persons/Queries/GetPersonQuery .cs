@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Helpers.Queries
+namespace Application.Persons.Queries
 {
     public class GetPersonQuery : IRequest<PersonVM>
     {

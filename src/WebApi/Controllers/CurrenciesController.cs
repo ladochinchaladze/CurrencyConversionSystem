@@ -40,14 +40,14 @@ namespace WebApi.Controllers
 
             await Mediator.Send(command);
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
             await Mediator.Send(new DeleteCurrencyComand { Id = id });
-            return NoContent();
+            return Ok();
         }
 
     }

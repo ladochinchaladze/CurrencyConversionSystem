@@ -28,6 +28,14 @@ namespace Application.Reports.Queries
 
             public async Task<ReportVM> Handle(GetReportQuery request, CancellationToken cancellationToken)
             {
+
+                var data = await _context
+                    .Conversions
+                    .Include(x => x.Person)
+                    .ThenInclude(x=>x.Recomendator)
+                    .ToListAsync(cancellationToken);
+
+
                 var ownConversions = await _context
                     .Conversions
                     .Include(x => x.Person)

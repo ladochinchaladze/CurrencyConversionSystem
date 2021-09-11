@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Helpers.Queries
+namespace Application.Persons.Queries
 {
     public class PersonVM : IMapFrom<Person>
     {

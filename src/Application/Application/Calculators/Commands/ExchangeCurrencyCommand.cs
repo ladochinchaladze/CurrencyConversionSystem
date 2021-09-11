@@ -82,6 +82,8 @@ namespace Application.Calculators.Commands
                         PaidAmount = request.PaidAmount
                     }, cancellationToken);
 
+                await _context.SaveChangesAsync(cancellationToken);
+
                 return Unit.Value;
             }
         }

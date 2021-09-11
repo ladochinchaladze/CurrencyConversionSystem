@@ -9,10 +9,10 @@ namespace WebApi.Controllers
 {
     public class ReportsController : ApiControllerBase
     {
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<ActionResult<ReportVM>> GetReport([FromQuery] GetReportQuery query)
         {
-            return await Mediator.Send(new GetReportQuery());
+            return await Mediator.Send(query);
         }
     }
 }
