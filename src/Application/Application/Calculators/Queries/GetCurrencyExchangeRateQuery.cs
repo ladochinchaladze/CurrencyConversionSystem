@@ -41,7 +41,7 @@ namespace Application.Calculators.Queries
 
                 var exchangeRate = currencyTo.ExchangeRate.Sell / currencyFrom.ExchangeRate.Sell;
 
-                return exchangeRate;
+                return decimal.Round(exchangeRate, 4);
             }
         }
     }

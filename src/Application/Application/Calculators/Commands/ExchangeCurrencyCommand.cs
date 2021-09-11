@@ -20,7 +20,7 @@ namespace Application.Calculators.Commands
         public string IdentityNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string RecomendatorIdentityNumber { get; set; }
+        public string RecommendatorIdentityNumber { get; set; }
 
 
         public class ExchangeCurrencyCommandhandler : IRequestHandler<ExchangeCurrencyCommand, Unit>
@@ -48,7 +48,7 @@ namespace Application.Calculators.Commands
                         IdentityNumber = request.IdentityNumber,
                         FirstName = request.FirstName,
                         LastName = request.LastName,
-                        RecomendatorIdentityNumber = request.RecomendatorIdentityNumber
+                        RecommendatorIdentityNumber = request.RecommendatorIdentityNumber
                     };
 
                     await _context

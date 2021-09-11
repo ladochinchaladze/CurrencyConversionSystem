@@ -33,6 +33,7 @@ namespace Application.Currencies.Queries
 
                 var currency = await _context
                     .Currencies
+                    .Include(x=>x.ExchangeRate)
                     .Where(x => x.Id == request.Id && x.IsDeleted == false)
                     .ProjectTo<CurrencyDto>(_mapper.ConfigurationProvider)
                     .FirstAsync(cancellationToken);

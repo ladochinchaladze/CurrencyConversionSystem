@@ -42,7 +42,7 @@ namespace Application.Reports.Queries
                     .Persons
                     .Include(x => x.Conversions.Where(c => (request.From == null ? true : c.CreateDate >= request.From)
                     && (request.To == null ? true : c.CreateDate <= request.To)))
-                    .Where(x => x.RecomendatorIdentityNumber == request.IdentityNumber)
+                    .Where(x => x.RecommendatorIdentityNumber == request.IdentityNumber)
                     .Select(x => x.Conversions)
                     .CountAsync(cancellationToken);
 

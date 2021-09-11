@@ -59,11 +59,17 @@ namespace Application.Calculators.Commands
                         o.IdentityNumber,
                         o.FirstName,
                         o.LastName,
-                        o.RecomendatorIdentityNumber);
+                        o.RecommendatorIdentityNumber);
                 })
                 .WithMessage("Personal info is not filled");
 
+            When(x => !string.IsNullOrEmpty(x.FirstName), () =>
+             {
+                 RuleFor(x => x.IdentityNumber.Length).Equal(11).WithMessage("Please select correct identity number");
+                 RuleFor(x => x.RecommendatorIdentityNumber.Length).Equal(11).WithMessage("Please select correct recomendator identity number");
 
+             });
+            
 
             RuleFor(x => x)
                 .MustAsync((o, CancellationToken) => { return RecomendatorExists(o, CancellationToken); })
@@ -102,28 +108,16 @@ namespace Application.Calculators.Commands
                 .FirstAsync(x => x.Code == obj.CurrencyTo, cancellationToken);
 
 
-            return obj.ExchangeRate == currencyTo.ExchangeRate.Sell / currencyFrom.ExchangeRate.Sell;
+            return obj.ExchangeRate == decimal.Round(currencyTo.ExchangeRate.Sell / currencyFrom.ExchangeRate.Sell, 4);
         }
 
 
 
         public async Task<bool> IsCalculationCorrect(ExchangeCurrencyCommand obj, CancellationToken cancellationToken, params string[] personInfo)
         {
-            var currencyFrom = await _context
-                  .Currencies
-                  .Include(x => x.ExchangeRate)
-                  .FirstAsync(x => x.Code == obj.CurrencyFrom, cancellationToken);
+            var data = await Task.FromResult(obj.ReceivedAmount * obj.ExchangeRate == obj.PaidAmount);
 
-
-            var currencyTo = await _context
-                .Currencies
-                .Include(x => x.ExchangeRate)
-                .FirstAsync(x => x.Code == obj.CurrencyTo, cancellationToken);
-
-
-            var exchangeRate = currencyTo.ExchangeRate.Sell / currencyFrom.ExchangeRate.Sell;
-
-            return obj.ReceivedAmount * exchangeRate == obj.PaidAmount;
+            return data;
         }
 
         public async Task<bool> IsPersonInfo(decimal receivedAmount, string currencyToCode, CancellationToken cancellationToken, params string[] personInfo)
@@ -143,7 +137,7 @@ namespace Application.Calculators.Commands
 
         public async Task<bool> RecomendatorExists(ExchangeCurrencyCommand obj, CancellationToken cancellationToken)
         {
-            return await _context.Persons.AnyAsync(x => x.IdentityNumber == obj.RecomendatorIdentityNumber, cancellationToken);
+            return await _context.Persons.AnyAsync(x => x.IdentityNumber == obj.RecommendatorIdentityNumber, cancellationToken);
         }
 
 
@@ -168,7 +162,7 @@ namespace Application.Calculators.Commands
             var recomendersOperationsAmount = await _context
                  .Conversions
                  .Include(x => x.Person)
-                 .Where(x => x.Person.RecomendatorIdentityNumber == obj.IdentityNumber && x.CreateDate.Date == DateTime.Today)
+                 .Where(x => x.Person.RecommendatorIdentityNumber == obj.IdentityNumber && x.CreateDate.Date == DateTime.Today)
                  .SumAsync(x => x.AmountInLari, cancellationToken);
 
             return ownOperationAmount + recomendersOperationsAmount <= 100000;

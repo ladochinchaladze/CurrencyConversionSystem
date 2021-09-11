@@ -11,8 +11,8 @@ namespace Application.Currencies.Queries
 {
     public class ExchangeRateDto : IMapFrom<ExchangeRate>
     {
-        public decimal BuyInLari { get; set; }
-        public decimal SellInLari { get; set; }
+        public decimal Sell { get; set; }
+        public decimal Buy { get; set; }
 
     }
 }

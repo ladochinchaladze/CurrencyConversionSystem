@@ -29,10 +29,10 @@ namespace Application.Currencies.Queries
             public async Task<List<CurrencyDto>> Handle(GetCurrenciesQuery request, CancellationToken cancellationToken)
             {
 
-
                 var currencies = await _context
                     .Currencies
-                    .Where(x=>x.IsDeleted == false)
+                    .Include(x => x.ExchangeRate)
+                    .Where(x => x.IsDeleted == false)
                     .AsNoTracking()
                     .ProjectTo<CurrencyDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);

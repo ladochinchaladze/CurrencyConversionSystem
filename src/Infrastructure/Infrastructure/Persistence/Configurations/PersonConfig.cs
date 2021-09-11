@@ -16,11 +16,11 @@ namespace Infrastructure.Persistence.Configurations
             builder.ToTable("Persons");
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.IdentityNumber).IsUnique();
-            builder.HasIndex(x => x.RecomendatorIdentityNumber);
+            builder.HasIndex(x => x.RecommendatorIdentityNumber);
 
             builder.HasOne(x => x.Recomendator)
                 .WithMany(x => x.Recommendeds)
-                .HasPrincipalKey(x => x.RecomendatorIdentityNumber);
+                .HasPrincipalKey(x => x.RecommendatorIdentityNumber);
 
             builder.HasMany(x => x.Conversions)
                 .WithOne(x => x.Person)

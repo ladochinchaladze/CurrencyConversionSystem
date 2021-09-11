@@ -13,7 +13,7 @@ namespace Domain.Entities
         public string IdentityNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string RecomendatorIdentityNumber { get; set; }
+        public string RecommendatorIdentityNumber { get; set; }
 
         virtual public Person Recomendator { get; set; }
         virtual public IList<Person> Recommendeds { get; private set; } = new List<Person>();
